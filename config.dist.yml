@@ -3,3 +3,7 @@ mysql:
   database: db
   username: user
   password: pass
+mongo:
+  hostname: localhost
+  port: 27017
+  database: db
