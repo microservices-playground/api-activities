@@ -1,6 +1,7 @@
 import yaml
 import pymongo
-from flask import Flask
+from flask import Flask, Response
+from bson.json_util import dumps
 
 app = Flask(__name__)
 app.debug = True
@@ -17,14 +18,23 @@ def get_collection(collection_name):
     db = client[mongo_config.get('database')]
     return db[collection_name]
 
-
+# date               : '',
+# performer_id       : '',
+# performer_username : '',
+# performer_avatar   : '',
+# type               : '',
+# related_id         : '',
+# related_image      : '',
+# info               : '',
+# clicked            : ''
 @app.route("/activities")
 def get_activities():
-    activities = get_collection('activities').find({"user_id": 12}).sort([
+    cursor = get_collection('activities').find({"user_id": 12}, {"_id": 0, "user_id": 0}).sort([
         ("created_at", pymongo.DESCENDING)
     ])
 
-    return "Hello World 123!"
+    return Response(dumps(cursor), status=200, mimetype='application/json')
+
 
 if __name__ == "__main__":
     app.run()
