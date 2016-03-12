@@ -11,3 +11,4 @@ class Activity(Document):
     badge_name = StringField()
     badge_image = StringField()
     clicked = BooleanField()
+    user_id = IntField()

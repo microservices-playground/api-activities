@@ -4,7 +4,7 @@ from flask_mongorest.views import ResourceView
 from resources import ActivityResource
 
 
-@api.register(name='activities', url='/activities/')
+@api.register(name='activities', url='/activities')
 class ActivityView(ResourceView):
     resource = ActivityResource
     methods = [List]
