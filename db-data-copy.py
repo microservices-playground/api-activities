@@ -51,9 +51,9 @@ def get_legacy_activities(dbcursor):
 def get_collection(dbconf):
     client = MongoClient(dbconf.get('hostname'), dbconf.get('port'))
     db = client[dbconf.get('database')]
-    db.drop_collection('activities')
-    db.create_collection('activities')
-    return db.activities
+    db.drop_collection('activity')
+    db.create_collection('activity')
+    return db.activity
 
 
 config = load_configuration()
