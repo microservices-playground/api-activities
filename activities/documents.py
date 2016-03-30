@@ -6,7 +6,6 @@ class Activity(Document):
     config_collection_name = 'activity'
     config_polymorphic = 'type'
     config_polymorphic_collection = True
-    config_extra_fields = 'ignore'
 
     type = StringField()
     performed_by = StringField()
@@ -22,8 +21,19 @@ class Activity(Document):
 class Like(Activity):
     config_polymorphic_identity = 'like'
 
-    def __str__(self):
-        return '%s: like by %s' % (self.created_at, self.performed_by)
+    post_id = IntField()
+    post_image = StringField()
+
+    def to_dict(self):
+        return {
+            'type': self.type,
+            'performed_by': self.performed_by,
+            'performer_avatar': self.performer_avatar,
+            'post_id': self.post_id,
+            'post_image': self.post_image,
+            'created_at': self.created_at.isoformat(),
+            'clicked': self.clicked
+        }
 
 
 class Comment(Activity):
@@ -32,8 +42,16 @@ class Comment(Activity):
     post_id = IntField()
     post_image = StringField()
 
-    def __str__(self):
-        return '%s: comment by %s' % (self.created_at, self.performed_by)
+    def to_dict(self):
+        return {
+            'type': self.type,
+            'performed_by': self.performed_by,
+            'performer_avatar': self.performer_avatar,
+            'post_id': self.post_id,
+            'post_image': self.post_image,
+            'created_at': self.created_at.isoformat(),
+            'clicked': self.clicked
+        }
 
 
 class Repost(Activity):
@@ -42,15 +60,29 @@ class Repost(Activity):
     post_id = IntField()
     post_image = StringField()
 
-    def __str__(self):
-        return '%s: repost by %s' % (self.created_at, self.performed_by)
+    def to_dict(self):
+        return {
+            'type': self.type,
+            'performed_by': self.performed_by,
+            'performer_avatar': self.performer_avatar,
+            'post_id': self.post_id,
+            'post_image': self.post_image,
+            'created_at': self.created_at.isoformat(),
+            'clicked': self.clicked
+        }
 
 
 class Follow(Activity):
     config_polymorphic_identity = 'follow'
 
-    def __str__(self):
-        return '%s: follow by %s' % (self.created_at, self.performed_by)
+    def to_dict(self):
+        return {
+            'type': self.type,
+            'performed_by': self.performed_by,
+            'performer_avatar': self.performer_avatar,
+            'created_at': self.created_at.isoformat(),
+            'clicked': self.clicked
+        }
 
 
 class Mention(Activity):
@@ -59,8 +91,16 @@ class Mention(Activity):
     post_id = IntField()
     post_image = StringField()
 
-    def __str__(self):
-        return '%s: mention by %s' % (self.created_at, self.performed_by)
+    def to_dict(self):
+        return {
+            'type': self.type,
+            'performed_by': self.performed_by,
+            'performer_avatar': self.performer_avatar,
+            'post_id': self.post_id,
+            'post_image': self.post_image,
+            'created_at': self.created_at.isoformat(),
+            'clicked': self.clicked
+        }
 
 
 class Badge(Activity):
@@ -69,5 +109,13 @@ class Badge(Activity):
     badge_name = StringField()
     badge_image = StringField()
 
-    def __str__(self):
-        return '%s: badge by %s' % (self.created_at, self.performed_by)
+    def to_dict(self):
+        return {
+            'type': self.type,
+            'performed_by': self.performed_by,
+            'performer_avatar': self.performer_avatar,
+            'badge_name': self.badge_name,
+            'badge_image': self.badge_image,
+            'created_at': self.created_at.isoformat(),
+            'clicked': self.clicked
+        }
