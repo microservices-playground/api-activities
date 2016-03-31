@@ -69,7 +69,7 @@ for row in bar(legacy_activities):
         'type': row['type']
     }
 
-    if row['type'] in ('like', 'comment', 'repost', 'mention'):
+    if row['type'] in ('like', 'comment', 'repost', 'mention', 'badge'):
         activity['post_id'] = row['post_id']
         activity['post_image'] = row['post_image']
 

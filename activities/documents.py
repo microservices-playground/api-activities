@@ -112,10 +112,9 @@ class Badge(Activity):
     def to_dict(self):
         return {
             'type': self.type,
-            'performed_by': self.performed_by,
-            'performer_avatar': self.performer_avatar,
             'badge_name': self.badge_name,
             'badge_image': self.badge_image,
+            'post_id'
             'created_at': self.created_at.isoformat(),
             'clicked': self.clicked
         }
