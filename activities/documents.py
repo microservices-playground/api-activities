@@ -7,10 +7,10 @@ class Activity(Document):
     config_polymorphic = 'type'
     config_polymorphic_collection = True
 
-    type = StringField()
-    created_at = DateTimeField()
+    type = StringField(on_update='ignore')
+    created_at = DateTimeField(on_update='ignore')
     clicked = BoolField()
-    user_id = IntField()
+    user_id = IntField(on_update='ignore')
 
 
 class Like(Activity):

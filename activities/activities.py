@@ -1,9 +1,11 @@
-from flask import jsonify, request
+from flask import jsonify, request, abort
 from . import app, session
 from documents import Activity
 from pymongo import DESCENDING
 from flask_cors import cross_origin
+from mongoalchemy.exceptions import BadValueException, BadResultException
 
+USER_ID = 12
 PAGE_SIZE = 15
 
 
@@ -16,7 +18,7 @@ def list_activities():
     except (ValueError, AssertionError):
         page = 0
 
-    activities = session.query(Activity).filter(Activity.user_id == 12).sort((Activity.created_at, DESCENDING)) \
+    activities = session.query(Activity).filter(Activity.user_id == USER_ID).sort((Activity.created_at, DESCENDING)) \
         .limit(PAGE_SIZE).skip(page * PAGE_SIZE)
 
     meta = {
@@ -29,3 +31,16 @@ def list_activities():
     res = map(lambda activity: activity.to_dict(), activities)
 
     return jsonify(results=res, meta=meta)
+
+
+@app.route('/activities/<activity_id>', methods=['PATCH'])
+@cross_origin()
+def patch_activity(activity_id):
+    try:
+        activity = session.query(Activity).filter(Activity.mongo_id == activity_id, Activity.user_id == USER_ID).one()
+    except (BadValueException, BadResultException):
+        abort(404)
+
+    activity.clicked = True
+
+    return jsonify(activity.to_dict())
