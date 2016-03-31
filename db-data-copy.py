@@ -66,9 +66,7 @@ for row in bar(legacy_activities):
     activity = {
         'user_id': row['user_id'],
         'created_at': row['created_at'],
-        'type': row['type'],
-        'performed_by': row['performed_by'],
-        'performer_avatar': row['performer_avatar']
+        'type': row['type']
     }
 
     if row['type'] in ('like', 'comment', 'repost', 'mention'):
@@ -78,6 +76,9 @@ for row in bar(legacy_activities):
     if row['type'] == 'badge':
         activity['badge_name'] = row['badge_name']
         activity['badge_image'] = row['badge_image']
+    else:
+        activity['performed_by'] = row['performed_by']
+        activity['performer_avatar'] = row['performer_avatar']
 
     activity['clicked'] = True if row['clicked'] == 1 else False
 
