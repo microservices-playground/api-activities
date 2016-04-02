@@ -2,24 +2,34 @@ from mongoalchemy.document import Document
 from mongoalchemy.fields import *
 
 
+class Status(Document):
+    new_activities = IntField()
+    user_id = IntField()
+
+    def to_dict(self):
+        return {
+            'new_activities': self.new_activities
+        }
+
+
 class Activity(Document):
     config_collection_name = 'activity'
     config_polymorphic = 'type'
     config_polymorphic_collection = True
 
-    type = StringField(on_update='ignore', )
-    created_at = DateTimeField(on_update='ignore')
-    clicked = BoolField(required=True)
-    user_id = IntField(on_update='ignore')
+    type = StringField()
+    created_at = DateTimeField()
+    clicked = BoolField()
+    user_id = IntField()
 
 
 class Like(Activity):
     config_polymorphic_identity = 'like'
 
-    performed_by = StringField(on_update='ignore')
-    performer_avatar = StringField(on_update='ignore')
-    post_id = IntField(on_update='ignore')
-    post_image = StringField(on_update='ignore')
+    performed_by = StringField()
+    performer_avatar = StringField()
+    post_id = IntField()
+    post_image = StringField()
 
     def to_dict(self):
         return {
@@ -37,10 +47,10 @@ class Like(Activity):
 class Comment(Activity):
     config_polymorphic_identity = 'comment'
 
-    performed_by = StringField(on_update='ignore')
-    performer_avatar = StringField(on_update='ignore')
-    post_id = IntField(on_update='ignore')
-    post_image = StringField(on_update='ignore')
+    performed_by = StringField()
+    performer_avatar = StringField()
+    post_id = IntField()
+    post_image = StringField()
 
     def to_dict(self):
         return {
@@ -58,10 +68,10 @@ class Comment(Activity):
 class Repost(Activity):
     config_polymorphic_identity = 'repost'
 
-    performed_by = StringField(on_update='ignore')
-    performer_avatar = StringField(on_update='ignore')
-    post_id = IntField(on_update='ignore')
-    post_image = StringField(on_update='ignore')
+    performed_by = StringField()
+    performer_avatar = StringField()
+    post_id = IntField()
+    post_image = StringField()
 
     def to_dict(self):
         return {
@@ -79,8 +89,8 @@ class Repost(Activity):
 class Follow(Activity):
     config_polymorphic_identity = 'follow'
 
-    performed_by = StringField(on_update='ignore')
-    performer_avatar = StringField(on_update='ignore')
+    performed_by = StringField()
+    performer_avatar = StringField()
 
     def to_dict(self):
         return {
@@ -96,10 +106,10 @@ class Follow(Activity):
 class Mention(Activity):
     config_polymorphic_identity = 'mention'
 
-    performed_by = StringField(on_update='ignore')
-    performer_avatar = StringField(on_update='ignore')
-    post_id = IntField(on_update='ignore')
-    post_image = StringField(on_update='ignore')
+    performed_by = StringField()
+    performer_avatar = StringField()
+    post_id = IntField()
+    post_image = StringField()
 
     def to_dict(self):
         return {
@@ -117,10 +127,10 @@ class Mention(Activity):
 class Badge(Activity):
     config_polymorphic_identity = 'badge'
 
-    badge_name = StringField(on_update='ignore')
-    badge_image = StringField(on_update='ignore')
-    post_id = IntField(on_update='ignore')
-    post_image = StringField(on_update='ignore')
+    badge_name = StringField()
+    badge_image = StringField()
+    post_id = IntField()
+    post_image = StringField()
 
     def to_dict(self):
         return {

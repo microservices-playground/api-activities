@@ -18,3 +18,4 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 session = Session.connect(config.get('mongo', {}).get('database'))
 
 import activities
+import status
