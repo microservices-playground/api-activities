@@ -3,6 +3,7 @@ from . import app, session
 from documents import Activity
 from pymongo import DESCENDING
 from flask_cors import cross_origin
+from mongoalchemy.util import FieldNotFoundException
 from mongoalchemy.exceptions import BadValueException, BadResultException
 
 USER_ID = 12
@@ -37,10 +38,10 @@ def list_activities():
 @cross_origin()
 def patch_activity(activity_id):
     try:
-        activity = session.query(Activity).filter(Activity.mongo_id == activity_id, Activity.user_id == USER_ID).one()
-    except (BadValueException, BadResultException):
-        abort(404)
+        # TODO introduce validation or json schema
+        query = session.query(Activity).filter(Activity.mongo_id == activity_id, Activity.user_id == USER_ID)
+        query.set(**request.json).execute()
 
-    activity.clicked = True
-
-    return jsonify(activity.to_dict())
+        return jsonify(query.one().to_dict())
+    except (FieldNotFoundException, BadValueException):
+        abort(400)
