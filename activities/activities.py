@@ -11,7 +11,7 @@ PAGE_SIZE = 15
 
 
 @app.route('/activities')
-@cross_origin(methods=['GET', 'PATCH'])
+@cross_origin(methods=['GET'])
 @user_context
 def list_activities(user_id):
     try:
@@ -36,7 +36,7 @@ def list_activities(user_id):
 
 
 @app.route('/activities/<activity_id>', methods=['PATCH'])
-@cross_origin(methods=['GET', 'PATCH'])
+@cross_origin(methods=['PATCH'])
 @user_context
 def patch_activity(user_id, activity_id):
     try:
