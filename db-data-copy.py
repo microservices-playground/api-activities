@@ -111,4 +111,4 @@ for row in bar(legacy_statuses):
 
 statuses_collection.create_index('user_id', unique=True)
 
-print 'Migration successful'
+print('Migration successful')
