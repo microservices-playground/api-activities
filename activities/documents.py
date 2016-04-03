@@ -3,6 +3,8 @@ from mongoalchemy.fields import *
 
 
 class Status(Document):
+    config_collection_name = 'status'
+
     new_activities = IntField()
     user_id = IntField()
 
@@ -27,7 +29,7 @@ class Like(Activity):
     config_polymorphic_identity = 'like'
 
     performed_by = StringField()
-    performer_avatar = StringField()
+    performer_avatar = StringField(allow_none=True)
     post_id = IntField()
     post_image = StringField()
 
@@ -48,7 +50,7 @@ class Comment(Activity):
     config_polymorphic_identity = 'comment'
 
     performed_by = StringField()
-    performer_avatar = StringField()
+    performer_avatar = StringField(allow_none=True)
     post_id = IntField()
     post_image = StringField()
 
@@ -69,7 +71,7 @@ class Repost(Activity):
     config_polymorphic_identity = 'repost'
 
     performed_by = StringField()
-    performer_avatar = StringField()
+    performer_avatar = StringField(allow_none=True)
     post_id = IntField()
     post_image = StringField()
 
@@ -90,7 +92,7 @@ class Follow(Activity):
     config_polymorphic_identity = 'follow'
 
     performed_by = StringField()
-    performer_avatar = StringField()
+    performer_avatar = StringField(allow_none=True)
 
     def to_dict(self):
         return {
@@ -107,7 +109,7 @@ class Mention(Activity):
     config_polymorphic_identity = 'mention'
 
     performed_by = StringField()
-    performer_avatar = StringField()
+    performer_avatar = StringField(allow_none=True)
     post_id = IntField()
     post_image = StringField()
 

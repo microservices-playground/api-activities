@@ -4,22 +4,23 @@ from documents import Activity
 from pymongo import DESCENDING
 from flask_cors import cross_origin
 from mongoalchemy.util import FieldNotFoundException
-from mongoalchemy.exceptions import BadValueException, BadResultException
+from mongoalchemy.exceptions import BadValueException
+from context import user_context
 
-USER_ID = 12
 PAGE_SIZE = 15
 
 
 @app.route('/activities')
-@cross_origin()
-def list_activities():
+@cross_origin(methods=['GET', 'PATCH'])
+@user_context
+def list_activities(user_id):
     try:
         page = int(request.args.get('page', 0))
         assert page >= 0
     except (ValueError, AssertionError):
         page = 0
 
-    activities = session.query(Activity).filter(Activity.user_id == USER_ID).sort((Activity.created_at, DESCENDING)) \
+    activities = session.query(Activity).filter(Activity.user_id == user_id).sort((Activity.created_at, DESCENDING)) \
         .limit(PAGE_SIZE).skip(page * PAGE_SIZE)
 
     meta = {
@@ -35,11 +36,12 @@ def list_activities():
 
 
 @app.route('/activities/<activity_id>', methods=['PATCH'])
-@cross_origin()
-def patch_activity(activity_id):
+@cross_origin(methods=['GET', 'PATCH'])
+@user_context
+def patch_activity(user_id, activity_id):
     try:
         # TODO introduce validation or json schema
-        query = session.query(Activity).filter(Activity.mongo_id == activity_id, Activity.user_id == USER_ID)
+        query = session.query(Activity).filter(Activity.mongo_id == activity_id, Activity.user_id == user_id)
         query.set(**request.json).execute()
 
         return jsonify(query.one().to_dict())

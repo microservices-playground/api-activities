@@ -48,18 +48,29 @@ def get_legacy_activities(dbcursor):
     return dbcursor.fetchall()
 
 
-def get_collection(dbconf):
+def get_legacy_statuses(dbcursor):
+    query = """
+    SELECT
+      id AS user_id,
+      unread_activities AS new_activities
+    FROM users
+    """
+    dbcursor.execute(query)
+    return dbcursor.fetchall()
+
+
+def get_collection(dbconf, name):
     client = MongoClient(dbconf.get('hostname'), dbconf.get('port'))
     db = client[dbconf.get('database')]
-    db.drop_collection('activity')
-    db.create_collection('activity')
-    return db.activity
+    db.drop_collection(name)
+    db.create_collection(name)
+    return db[name]
 
 
 config = load_configuration()
 cursor = get_cursor(config.get('mysql', {}))
 legacy_activities = get_legacy_activities(cursor)
-collection = get_collection(config.get('mongo', {}))
+activities_collection = get_collection(config.get('mongo', {}), 'activity')
 bar = progressbar.ProgressBar()
 
 for row in bar(legacy_activities):
@@ -82,6 +93,22 @@ for row in bar(legacy_activities):
 
     activity['clicked'] = True if row['clicked'] == 1 else False
 
-    collection.insert_one(activity)
+    activities_collection.insert_one(activity)
+
+activities_collection.create_index('user_id')
+
+legacy_statuses = get_legacy_statuses(cursor)
+statuses_collection = get_collection(config.get('mongo', {}), 'status')
+bar = progressbar.ProgressBar()
+
+for row in bar(legacy_statuses):
+    status = {
+        'user_id': row['user_id'],
+        'new_activities': row['new_activities']
+    }
+
+    statuses_collection.insert_one(status)
+
+statuses_collection.create_index('user_id', unique=True)
 
 print 'Migration successful'
