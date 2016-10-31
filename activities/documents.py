@@ -25,14 +25,19 @@ class Activity(Document):
     user_id = IntField()
 
 
-class Like(Activity):
+class PerformerAware(Document):
+    performed_by = StringField()
+    performer_avatar = StringField(allow_none=True)
+
+
+class PostAware(Document):
+    post_id = IntField()
+    post_image = StringField()
+
+
+class Like(Activity, PerformerAware, PostAware):
     config_polymorphic_identity = 'like'
 
-    performed_by = StringField()
-    performer_avatar = StringField(allow_none=True)
-    post_id = IntField()
-    post_image = StringField()
-
     def to_dict(self):
         return {
             'id': str(self.mongo_id),
@@ -46,14 +51,9 @@ class Like(Activity):
         }
 
 
-class Comment(Activity):
+class Comment(Activity, PerformerAware, PostAware):
     config_polymorphic_identity = 'comment'
 
-    performed_by = StringField()
-    performer_avatar = StringField(allow_none=True)
-    post_id = IntField()
-    post_image = StringField()
-
     def to_dict(self):
         return {
             'id': str(self.mongo_id),
@@ -67,14 +67,9 @@ class Comment(Activity):
         }
 
 
-class Repost(Activity):
+class Repost(Activity, PerformerAware, PostAware):
     config_polymorphic_identity = 'repost'
 
-    performed_by = StringField()
-    performer_avatar = StringField(allow_none=True)
-    post_id = IntField()
-    post_image = StringField()
-
     def to_dict(self):
         return {
             'id': str(self.mongo_id),
@@ -88,12 +83,9 @@ class Repost(Activity):
         }
 
 
-class Follow(Activity):
+class Follow(Activity, PerformerAware):
     config_polymorphic_identity = 'follow'
 
-    performed_by = StringField()
-    performer_avatar = StringField(allow_none=True)
-
     def to_dict(self):
         return {
             'id': str(self.mongo_id),
@@ -105,13 +97,8 @@ class Follow(Activity):
         }
 
 
-class Mention(Activity):
+class Mention(Activity, PerformerAware, PostAware):
     config_polymorphic_identity = 'mention'
-
-    performed_by = StringField()
-    performer_avatar = StringField(allow_none=True)
-    post_id = IntField()
-    post_image = StringField()
 
     def to_dict(self):
         return {
@@ -126,13 +113,11 @@ class Mention(Activity):
         }
 
 
-class Badge(Activity):
+class Badge(Activity, PostAware):
     config_polymorphic_identity = 'badge'
 
     badge_name = StringField()
     badge_image = StringField()
-    post_id = IntField()
-    post_image = StringField()
 
     def to_dict(self):
         return {
