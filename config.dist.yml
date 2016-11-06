@@ -1,4 +1,5 @@
 app:
+  port: 5000
   debug: false
 mysql:
   host: localhost
