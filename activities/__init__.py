@@ -15,7 +15,7 @@ cors = CORS(app)
 app.debug = config.get('app', {}).get('debug', False)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-session = Session.connect(config.get('mongo', {}).get('database'))
+session = Session.connect(config.get('mongo', {}).get('database'), host=config.get('mongo', {}).get('host'))
 
 import activities
 import status

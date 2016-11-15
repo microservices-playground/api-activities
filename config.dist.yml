@@ -2,11 +2,9 @@ app:
   port: 5000
   debug: false
 mysql:
-  host: localhost
-  database: db
-  username: user
-  password: pass
+  host: 192.168.100.2
+  database: foodlove
+  username: foodlove
+  password: foodlove
 mongo:
-  hostname: localhost
-  port: 27017
-  database: db
+  host: "mongodb://activities:activities@192.168.100.4:27017/activities?authMechanism=SCRAM-SHA-1"
