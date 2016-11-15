@@ -8,3 +8,4 @@ mysql:
   password: foodlove
 mongo:
   host: "mongodb://activities:activities@192.168.100.4:27017/activities?authMechanism=SCRAM-SHA-1"
+  database: activities
