@@ -11,7 +11,7 @@ def load_configuration():
 
 
 def get_cursor(dbconf):
-    db = MySQLdb.connect(host=dbconf.get('hostname'), user=dbconf.get('username'), passwd=dbconf.get('password'),
+    db = MySQLdb.connect(host=dbconf.get('host'), user=dbconf.get('username'), passwd=dbconf.get('password'),
                          db=dbconf.get('database'), charset='utf8')
     return db.cursor(MySQLdb.cursors.DictCursor)
 
