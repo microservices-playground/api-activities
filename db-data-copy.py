@@ -60,7 +60,7 @@ def get_legacy_statuses(dbcursor):
 
 
 def get_collection(dbconf, name):
-    client = MongoClient(dbconf.get('hostname'), dbconf.get('port'))
+    client = MongoClient(host=dbconf.get('host'))
     db = client[dbconf.get('database')]
     db.drop_collection(name)
     db.create_collection(name)
