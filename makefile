@@ -1,6 +1,9 @@
 run:
 	python run.py
 
+test:
+	python activities_tests.py
+
 db-data-copy:
 	python db-data-copy.py
 
